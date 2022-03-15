@@ -13,25 +13,19 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    steps: # 自动化步骤
+      - uses: actions/checkout@v2 # 第一步，下载代码仓库
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: npm
+          cache-dependency-path: package.json
+      - run: npm install yarn -g
+      - run: yarn 
+      - run: yarn build
 
-    strategy:
-      matrix:
-        node-version: [14.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm install yarn -g
-    - run: yarn
-    - run: yarn build
-
-    - name: deploy
-      uses: JamesIves/github-pages-deploy-action@v4.2.5
-      with:
-        branch: master
-        folder: build
+      - name: deploy
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          branch: master
+          folder: build
