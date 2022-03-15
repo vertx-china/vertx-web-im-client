@@ -64,6 +64,9 @@ const MSGEditor: React.FC<{ handleScroll: any }> = ({ handleScroll }) => {
 
   const handleSend = (val?: string) => {
     const message = val || content;
+    if(message.split('').some(item=> item === ' ')){
+      return;
+    }
     const result: VC.MSGStruct = {
       message,
       nickname: "guest-web",
