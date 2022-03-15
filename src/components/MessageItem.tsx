@@ -14,6 +14,7 @@ const Container = styled.div<{ isSelf: boolean }>`
   display: flex;
   margin: 5px 0px;
   align-items: flex-start;
+  justify-content: ${({isSelf})=> !isSelf ? 'flex-start':"flex-end"};
   .avatar-contaienr{
     display: flex;
     justify-content: center;
@@ -69,8 +70,11 @@ const MessageItem: React.FC<Props> = ({ clientID, data }) => {
 
   const avatar = useMemo(() => String(nickname).split("")[0], [nickname]);
 
+  const isSelf = clientID === id;
+
   return (
-    <Container isSelf={clientID === id}>
+    <Container isSelf={isSelf}>
+
       <div className="avatar-contaienr">
         <div className="avatar">{avatar}</div>
       </div>

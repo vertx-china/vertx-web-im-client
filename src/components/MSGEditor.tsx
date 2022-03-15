@@ -3,7 +3,7 @@ import { Image } from "@mui/icons-material";
 import { Button, ButtonGroup, IconButton } from "@mui/material";
 import { useContext, useState } from "react";
 import { socket } from "../utils";
-import { DataContext } from "./DataProvider";
+import { DataContext, DispatchContext } from "./DataProvider";
 
 const Container = styled.div`
   width: 100%;
@@ -32,6 +32,7 @@ const Container = styled.div`
 
 const MSGEditor = () => {
   const { clientID } = useContext(DataContext);
+  const dispatch = useContext(DispatchContext);
 
   const [content, setContent] = useState<string>("");
 
@@ -66,7 +67,14 @@ const MSGEditor = () => {
       time: new Date().toDateString(),
       timestamp: Date.now(),
     };
-    if (content) socket.send(JSON.stringify(result));
+    if (content) {
+      dispatch({
+        type:'setMSGData',
+        payload: result
+      })
+      socket.send(JSON.stringify(result))
+      setContent('')
+    };
   };
 
   return (
