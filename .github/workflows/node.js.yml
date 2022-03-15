@@ -1,0 +1,31 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps: # 自动化步骤
+      - uses: actions/checkout@v2 # 第一步，下载代码仓库
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: npm
+          cache-dependency-path: package.json
+      - run: npm install yarn -g
+      - run: yarn 
+      - run: yarn build
+
+      - name: deploy
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          branch: master
+          folder: build
