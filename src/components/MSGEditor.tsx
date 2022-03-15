@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Image } from "@mui/icons-material";
-import { Button, ButtonGroup, IconButton, Input } from "@mui/material";
+import { Button, ButtonGroup, IconButton } from "@mui/material";
 import { useContext, useState } from "react";
 import { socket } from "../utils";
 import { DataContext } from "./DataProvider";

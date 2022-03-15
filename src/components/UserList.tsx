@@ -22,3 +22,5 @@ const UserList = () => {
     </Container>
   );
 };
+
+export default UserList;
