@@ -1,5 +1,5 @@
 import { once } from "lodash";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useRef } from "react";
 import "./App.css";
 import { DataContext, DispatchContext } from "./components/DataProvider";
 // import {  useData, useDispatch } from "./components/DataProvider";
@@ -10,12 +10,11 @@ import { socket } from "./utils";
 function App() {
   // const dispatch = useDispatch();
   const dispatch = useContext(DispatchContext);
-  const { clientID } = useContext(DataContext);
+  const { clientID ,data} = useContext(DataContext);
   const getClientID = useMemo(
     () =>
       once((data: VC.MSGStruct) => {
         const keys = Object.keys(data);
-        console.log(data, keys[0]);
         if (keys.length === 1 && keys[0] === "id") {
           dispatch({
             type: "setClientType",
@@ -60,13 +59,38 @@ function App() {
         console.log(error);
       }
     });
+    return ()=>{
+      socket.close();
+    }
   }, []); //eslint-disable-line
+
+  const listRef = useRef<any>(null);
+
+  useEffect(() => {
+    if ( !listRef) {
+      return;
+    }
+    const cur = listRef.current;
+    // ref = listRef;
+    if (cur.scrollTop + 50 >= cur.scrollHeight - cur.offsetHeight) {
+      cur.scrollTop = cur.offsetHeight + cur.scrollHeight;
+    }
+  },[data]);
+
+
+  const handleScroll = () =>{
+    if ( !listRef) {
+      return;
+    }
+    const cur = listRef.current;
+    cur.scrollTop = cur.offsetHeight + cur.scrollHeight;
+  }
 
   return (
     <div className="App">
       <div className="msg-container">
-        <MessageList />
-        <MSGEditor />
+        <MessageList ref={listRef} />
+        <MSGEditor handleScroll={handleScroll} />
       </div>
     </div>
   );

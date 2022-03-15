@@ -1,22 +1,39 @@
+import React from "react";
 import { useContext } from "react";
 import { DataContext } from "./DataProvider";
 import MessageItem from "./MessageItem";
 
-const MessageList = () =>{
+const MessageList = React.forwardRef<HTMLDivElement>((props,listRef) => {
+  const { data, clientID } = useContext(DataContext);
 
-  const {data,clientID} = useContext(DataContext);  
-  
-  const renderItem = () =>{
-    return data.map((item,index)=>{
-      const {timestamp,id} = item;
-      return <MessageItem data={item} key={id+ timestamp+index} clientID={clientID}  />
-    })
-  }
+  // const listRef = useRef<HTMLDivElement>(null);
 
-  return <div style={{
-    flex:1,
-    overflow:'auto'
-  }}>{renderItem()}</div>
-}
+  const renderItem = () => {
+    return data.map((item, index) => {
+      const { timestamp, id } = item;
+      return (
+        <MessageItem
+          data={item}
+          key={id + timestamp + index}
+          clientID={clientID}
+        />
+      );
+    });
+  };
+
+
+
+  return (
+    <div
+      style={{
+        flex: 1,
+        overflow: "auto",
+      }}
+      ref={listRef}
+    >
+      {renderItem()}
+    </div>
+  );
+});
 
 export default MessageList;

@@ -30,9 +30,12 @@ const Container = styled.div`
   }
 `;
 
-const MSGEditor = () => {
+const MSGEditor: React.FC<{ handleScroll: any }> = ({ handleScroll }) => {
   const { clientID } = useContext(DataContext);
   const dispatch = useContext(DispatchContext);
+
+  const [isFocus, setFocus] = useState(false);
+  const [isOpen, setOpen] = useState(true);
 
   const [content, setContent] = useState<string>("");
 
@@ -59,9 +62,10 @@ const MSGEditor = () => {
     });
   };
 
-  const handleClick = () => {
+  const handleSend = (val?: string) => {
+    const message = val || content;
     const result: VC.MSGStruct = {
-      message: content,
+      message,
       nickname: "guest-web",
       id: clientID,
       time: new Date().toDateString(),
@@ -69,12 +73,24 @@ const MSGEditor = () => {
     };
     if (content) {
       dispatch({
-        type:'setMSGData',
-        payload: result
-      })
-      socket.send(JSON.stringify(result))
-      setContent('')
-    };
+        type: "setMSGData",
+        payload: result,
+      });
+      socket.send(JSON.stringify(result));
+      setContent("");
+      handleScroll();
+    }
+  };
+
+  const handleClick = () => {
+    handleSend();
+  };
+
+  const handleKeyPress = (e: any) => {
+    // console.log(e);
+    if (e.key === "Enter" && isFocus) {
+      handleSend(e.target.value);
+    }
   };
 
   return (
@@ -106,7 +122,11 @@ const MSGEditor = () => {
       </div>
       <div>
         <textarea
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          onKeyUp={handleKeyPress}
           value={content}
+          style={isOpen ? {} : { height: "0px", position: "absolute",visibility:'hidden' }}
           onChange={(e) => setContent(e.target.value)}
           placeholder="消息内容...."
         />
@@ -115,6 +135,16 @@ const MSGEditor = () => {
         <ButtonGroup>
           <Button onClick={handleClick} size="small">
             send
+          </Button>
+          <Button
+            onClick={() => setOpen(!isOpen)}
+            variant={isOpen ? "outlined" : "contained"}
+            size="small"
+          >
+            Collpase editor
+          </Button>
+          <Button onClick={handleScroll} size="small">
+            Go Buttom
           </Button>
         </ButtonGroup>
       </div>
