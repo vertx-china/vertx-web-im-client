@@ -6,7 +6,7 @@ import { DataContext, DispatchContext } from "./components/DataProvider";
 import MessageList from "./components/MessageList";
 import MSGEditor from "./components/MSGEditor";
 import UserList from "./components/UserList";
-import { socket } from "./utils";
+import { socket, socketInst } from "./utils";
 
 function App() {
   // const dispatch = useDispatch();
@@ -57,6 +57,9 @@ function App() {
       }
     });
     
+    socket.addEventListener('close',()=>{
+      socketInst.reconnect();
+    })
 
   }, []); //eslint-disable-line
 

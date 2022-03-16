@@ -22,5 +22,25 @@ export const isUrl = (url: string) => {
   return reg.test(url)
 }
 
+class Socket {
+  private scoket: WebSocket = WebSocket as any;
+  url: string = '';
+  connect = (url:string) => {
+    this.scoket = new WebSocket(url);
+    this.url = url;
+    return this.scoket
+  }
 
-export const socket = new WebSocket("ws://103.145.87.185:32168");
+  reconnect = (url?: string)=>{
+    if(this.scoket?.CLOSED || this.scoket?.CLOSING){
+      this.scoket.close()
+      console.log('重新链接')
+      this.scoket = new WebSocket(this.url||url||'')
+    }
+  }
+
+}
+
+export const socketInst = new Socket()
+
+export const socket = socketInst.connect("ws://103.145.87.185:32168");

@@ -64,7 +64,8 @@ const MSGEditor: React.FC<{ handleScroll: any }> = ({ handleScroll }) => {
 
   const handleSend = (val?: VC.MSG) => {
     const message = val || content;
-    if(typeof message === 'string' && message.split('').some(item=> item === ' ')){
+    
+    if(typeof message === 'string' && message.replace('\n','').replace(' ','')){
       //Don't send the message when it only has Space
       return;
     }
@@ -148,7 +149,7 @@ const MSGEditor: React.FC<{ handleScroll: any }> = ({ handleScroll }) => {
             Collpase editor
           </Button>
           <Button onClick={handleScroll} size="small">
-            Go Buttom
+            Go Bottom
           </Button>
         </ButtonGroup>
       </div>
