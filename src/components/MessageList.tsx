@@ -3,7 +3,8 @@ import { useContext } from "react";
 import { DataContext } from "./DataProvider";
 import MessageItem from "./MessageItem";
 
-const MessageList = React.forwardRef<HTMLDivElement>((props,listRef) => {
+
+const MessageList = React.forwardRef<HTMLDivElement>((props, listRef) => {
   const { data, clientID } = useContext(DataContext);
 
   // const listRef = useRef<HTMLDivElement>(null);
@@ -21,13 +22,12 @@ const MessageList = React.forwardRef<HTMLDivElement>((props,listRef) => {
     });
   };
 
-
-
   return (
     <div
       style={{
         flex: 1,
         overflow: "auto",
+        position: "relative",
       }}
       ref={listRef}
     >

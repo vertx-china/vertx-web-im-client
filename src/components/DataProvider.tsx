@@ -27,7 +27,7 @@ const reduce: React.ReducerStateWithoutAction<any> = (
         state.data = [...state.data, payload];
         break;
       case "setUserList":
-        state.userList = payload;
+        state.userList = payload.nicknames;
         break
       default:
         return state;

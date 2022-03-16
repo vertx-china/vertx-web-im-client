@@ -5,6 +5,7 @@ import { DataContext, DispatchContext } from "./components/DataProvider";
 // import {  useData, useDispatch } from "./components/DataProvider";
 import MessageList from "./components/MessageList";
 import MSGEditor from "./components/MSGEditor";
+import UserList from "./components/UserList";
 import { socket } from "./utils";
 
 function App() {
@@ -46,10 +47,6 @@ function App() {
   }, [clientID, dispatch]);
 
   useEffect(() => {
-    socket.addEventListener("open", () => {
-      socket.send(JSON.stringify({ nickname: "get user list" }));
-    });
-
     // Listen for messages
     socket.addEventListener("message", function (event) {
       try {
@@ -92,6 +89,8 @@ function App() {
         <MessageList ref={listRef} />
         <MSGEditor handleScroll={handleScroll} />
       </div>
+      <UserList />
+
     </div>
   );
 }

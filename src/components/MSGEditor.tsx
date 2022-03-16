@@ -62,14 +62,15 @@ const MSGEditor: React.FC<{ handleScroll: any }> = ({ handleScroll }) => {
     });
   };
 
-  const handleSend = (val?: string) => {
+  const handleSend = (val?: VC.MSG) => {
     const message = val || content;
-    if(message.split('').some(item=> item === ' ')){
+    if(typeof message === 'string' && message.split('').some(item=> item === ' ')){
+      //Don't send the message when it only has Space
       return;
     }
     const result: VC.MSGStruct = {
       message,
-      nickname: "guest-web",
+      nickname: localStorage.getItem('nickname') || 'guest-name',
       id: clientID,
       time: new Date().toDateString(),
       timestamp: Date.now(),

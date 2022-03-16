@@ -1,8 +1,18 @@
+/**
+ * {
+  "message":{
+    "type":"img",
+    "base64":"<url>"
+  }
+}
+ */
+
 declare namespace VC {
 
   type MSG = string | 
   { message: string }[] | 
-  { type: number; content: string }
+  { type: number| string; content: string }
+  
 
   interface MSGStruct {
     message: MSG;
