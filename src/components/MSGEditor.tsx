@@ -65,7 +65,7 @@ const MSGEditor: React.FC<{ handleScroll: any }> = ({ handleScroll }) => {
   const handleSend = (val?: VC.MSG) => {
     const message = val || content;
     
-    if(typeof message === 'string' && message.replace('\n','').replace(' ','')){
+    if(typeof message === 'string' && !message.replace('\n','').replace(' ','')){
       //Don't send the message when it only has Space
       return;
     }
