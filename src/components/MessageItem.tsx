@@ -49,7 +49,7 @@ const Container = styled.div<{ isSelf: boolean }>`
       padding: 3px 5px;
       border-radius: 8px;
       background-color: ${({ isSelf }) => (isSelf ? "#00AB55" : "#007B55")};
-      max-width: 70%;
+      max-width: 70vw;
       color: #fff;
       img{
         width: 300px;

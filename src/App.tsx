@@ -56,9 +56,8 @@ function App() {
         console.log(error);
       }
     });
-    return ()=>{
-      socket.close();
-    }
+    
+
   }, []); //eslint-disable-line
 
   const listRef = useRef<any>(null);
