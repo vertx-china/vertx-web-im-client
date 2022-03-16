@@ -24,19 +24,24 @@ export const isUrl = (url: string) => {
 
 class Socket {
   private scoket: WebSocket = WebSocket as any;
-  url: string = '';
-  connect = (url:string) => {
+  private url: string = '';
+  private timer: any = 0;
+  connect = (url: string) => {
     this.scoket = new WebSocket(url);
     this.url = url;
     return this.scoket
   }
 
-  reconnect = (url?: string)=>{
-    if(this.scoket?.CLOSED || this.scoket?.CLOSING){
-      this.scoket.close()
-      console.log('重新链接')
-      this.scoket = new WebSocket(this.url||url||'')
-    }
+  reconnect = (url?: string) => {
+    this.timer = setTimeout(() => {
+      this.timer && clearTimeout(this.timer)
+      if (this.scoket?.CLOSED || this.scoket?.CLOSING) {
+        this.scoket.close()
+        console.log('重新链接')
+        this.scoket = new WebSocket(this.url || url || '')
+      }
+    }, 1000)
+
   }
 
 }
