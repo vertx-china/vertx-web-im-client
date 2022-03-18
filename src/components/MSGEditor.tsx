@@ -51,27 +51,37 @@ const MSGEditor: React.FC<{ handleScroll: any }> = ({ handleScroll }) => {
       reader.onload = function () {
         console.log(reader.result);
         const result: VC.MSGStruct = {
-          message: reader.result?.toString() || "【不支持的消息内容】",
-          nickname: "guest-web",
+          message:
+            { type: "img", base64: reader.result?.toString() } ||
+            "【不支持的消息内容】",
+          nickname: localStorage.getItem("nickname") || "guest-name",
           id: clientID,
           time: new Date().toDateString(),
           timestamp: Date.now(),
         };
+        dispatch({
+          type: "setMSGData",
+          payload: result,
+        });
         socket.send(JSON.stringify(result));
+        handleScroll();
       };
     });
   };
 
   const handleSend = (val?: VC.MSG) => {
     const message = val || content;
-    
-    if(typeof message === 'string' && !message.replace('\n','').replace(' ','')){
+
+    if (
+      typeof message === "string" &&
+      !message.replace("\n", "").replace(" ", "")
+    ) {
       //Don't send the message when it only has Space
       return;
     }
     const result: VC.MSGStruct = {
       message,
-      nickname: localStorage.getItem('nickname') || 'guest-name',
+      nickname: localStorage.getItem("nickname") || "guest-name",
       id: clientID,
       time: new Date().toDateString(),
       timestamp: Date.now(),
@@ -131,7 +141,11 @@ const MSGEditor: React.FC<{ handleScroll: any }> = ({ handleScroll }) => {
           onBlur={() => setFocus(false)}
           onKeyUp={handleKeyPress}
           value={content}
-          style={isOpen ? {} : { height: "0px", position: "absolute",visibility:'hidden' }}
+          style={
+            isOpen
+              ? {}
+              : { height: "0px", position: "absolute", visibility: "hidden" }
+          }
           onChange={(e) => setContent(e.target.value)}
           placeholder="消息内容...."
         />

@@ -9,10 +9,45 @@
 
 declare namespace VC {
 
-  type MSG = string | 
-  { message: string }[] | 
-  { type: number| string; content: string }
-  
+  interface TextMSG {
+    type: 0,
+    content: string;
+  }
+
+  interface ImageMSG {
+    type: "img";
+    url?: string;
+    base64?: string;
+  }
+
+  interface AudioMSG {
+    type: "audio";
+    url: string;
+  }
+
+  interface VideoMSG {
+    type: "video";
+    url: string;
+  }
+  interface LinkMSG {
+    type: "link";
+    url: string;
+    content: string;
+  }
+
+  type MixinMSG = TextMSG | ImageMSG | LinkMSG | AudioMSG | VideoMSG
+
+  type RichTextMSG = MixinMSG[];
+
+
+
+  interface HistoryMSG{
+    type: "history";
+    content: MixinMSG[]
+  }
+
+  type MSG = string | MixinMSG | RichTextMSG | HistoryMSG;
+
 
   interface MSGStruct {
     message: MSG;
@@ -20,6 +55,7 @@ declare namespace VC {
     id: string;
     time: string;
     generatorVerticleID?: string;
+    color?: string;
     timestamp: number
   }
 
